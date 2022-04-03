@@ -1,19 +1,12 @@
-const Router = require("koa-router");
+import Router from "koa-router";
+import * as routinesCtrl from "./routines.ctrl";
+
 const routines = new Router();
 
-const printInfo = (ctx) => {
-  ctx.body = {
-    method: ctx.method,
-    path: ctx.path,
-    params: ctx.params,
-  };
-};
+routines.get("/", routinesCtrl.list);
+routines.post("/", routinesCtrl.write);
+routines.get("/:id", routinesCtrl.read);
+routines.delete("/:id", routinesCtrl.remove);
+routines.patch("/:id", routinesCtrl.update);
 
-routines.get("/", printInfo);
-routines.post("/", printInfo);
-routines.get("/:id", printInfo);
-routines.delete("/:id", printInfo);
-routines.put("/:id", printInfo);
-routines.patch("/:id", printInfo);
-
-module.exports = routines;
+export default users;

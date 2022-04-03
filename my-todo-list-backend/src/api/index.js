@@ -1,9 +1,9 @@
-const Router = require("koa-router");
-const users = require("./users");
-const routines = require("./routines");
+import Router from "koa-router";
+import users from "./users";
+import routines from "./routines";
 
 const api = new Router();
 api.use("/users", users.route());
 api.use("/routines", routines.route());
 
-module.exports = api;
+export default api;
