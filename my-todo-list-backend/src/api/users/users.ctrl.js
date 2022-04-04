@@ -2,7 +2,7 @@
 POST /api/users
 { name, password, email }
 */
-exports.write = async (ctx) => {
+export const write = async (ctx) => {
   const { name, password, email } = ctx.request.body;
   const user = new User({
     name,
@@ -32,7 +32,7 @@ export const list = async (ctx) => {
 /* id별 사용자 조회
 GET /api/users/:id
 */
-exports.read = async (ctx) => {
+export const read = async (ctx) => {
   const { id } = ctx.params;
   try {
     const user = await User.findById(id).exec();
@@ -49,7 +49,7 @@ exports.read = async (ctx) => {
 /* 사용자 제거
 DELETE /api/users/:id
 */
-exports.remove = async (ctx) => {
+export const remove = async (ctx) => {
   const { id } = ctx.params;
   try {
     await User.findByIdAndRemove(id).exec();
@@ -63,7 +63,7 @@ exports.remove = async (ctx) => {
 PATCH /api/posts/:id
  { name, password, email } 
 */
-exports.update = async (ctx) => {
+export const update = async (ctx) => {
   const { id } = ctx.params;
   try {
     const user = await User.findByIdAndUpdate(id, ctx.request.body, {

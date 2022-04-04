@@ -2,7 +2,7 @@
 POST /api/routines
 { isDone, todo, type }
 */
-exports.write = async (ctx) => {
+export const write = async (ctx) => {
   const { isDone, todo, type } = ctx.request.body;
   const routine = new routine({
     isDone,
@@ -32,7 +32,7 @@ export const list = async (ctx) => {
 /* id별 루틴 조회
 GET /api/routines/:id
 */
-exports.read = async (ctx) => {
+export const read = async (ctx) => {
   const { id } = ctx.params;
   try {
     const routine = await routine.findById(id).exec();
@@ -49,7 +49,7 @@ exports.read = async (ctx) => {
 /* 루틴 제거
 DELETE /api/routines/:id
 */
-exports.remove = async (ctx) => {
+export const remove = async (ctx) => {
   const { id } = ctx.params;
   try {
     await routine.findByIdAndRemove(id).exec();
@@ -63,7 +63,7 @@ exports.remove = async (ctx) => {
 PATCH /api/posts/:id
  {  isDone, todo, type } 
 */
-exports.update = async (ctx) => {
+export const update = async (ctx) => {
   const { id } = ctx.params;
   try {
     const routine = await routine
