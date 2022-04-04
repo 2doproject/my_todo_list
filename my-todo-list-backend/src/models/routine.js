@@ -8,7 +8,11 @@ const RoutineSchema = new Schema({
   todo: String,
   type: String,
   createdAt: Date,
-  updatedAt: Date
+  updatedAt: Date,
+  targetDate: {
+    $gte: Date,
+    $lte: Date
+  }
 });
 
 const Routine = mongoose.model('Routine', RoutineSchema);
