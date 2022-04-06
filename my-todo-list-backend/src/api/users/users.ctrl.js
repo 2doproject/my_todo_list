@@ -48,16 +48,17 @@ export const read = async (ctx) => {
 
 /* 사용자 제거
 DELETE /api/users/:id
+TODO : 추후에 soft delete 처리
 */
-export const remove = async (ctx) => {
-  const { id } = ctx.params;
-  try {
-    await User.findByIdAndRemove(id).exec();
-    ctx.satatu = 204;
-  } catch (e) {
-    ctx.throw(500, e);
-  }
-};
+// export const remove = async (ctx) => {
+//   const { id } = ctx.params;
+//   try {
+//     await User.findByIdAndRemove(id).exec();
+//     ctx.satatu = 204;
+//   } catch (e) {
+//     ctx.throw(500, e);
+//   }
+// };
 
 /* 사용자 정보 수정 (특정 정보 변경)
 PATCH /api/posts/:id
