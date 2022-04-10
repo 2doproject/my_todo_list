@@ -4,8 +4,7 @@ const { Schema } = mongoose;
 
 const RoutineSchema = new Schema({
   isDone: Boolean,
-  userId: { type: Schema.Types.Number, ref: 'User' },
-  todo: String,
+  todo: { type: String, required: true },
   type: String,
   createdAt: Date,
   updatedAt: Date,
