@@ -1,3 +1,5 @@
+import User from '../../models/user';
+
 /* 사용자 생성
 POST /api/users
 { name, password, email }
