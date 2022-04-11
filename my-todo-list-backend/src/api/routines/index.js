@@ -9,4 +9,4 @@ routines.get("/:id", routinesCtrl.read);
 routines.delete("/:id", routinesCtrl.remove);
 routines.patch("/:id", routinesCtrl.update);
 
-export default users;
+export default routines;
