@@ -5,8 +5,9 @@ POST /api/users
 { name, password, email }
 */
 export const write = async (ctx) => {
-  const { name, password, email } = ctx.request.body;
+  const { identifier, name, password, email } = ctx.request.body;
   const user = new User({
+    identifier,
     name,
     password,
     email,
@@ -35,9 +36,9 @@ export const list = async (ctx) => {
 GET /api/users/:id
 */
 export const read = async (ctx) => {
-  const { id } = ctx.params;
+  const { identifier } = ctx.params;
   try {
-    const user = await User.findById(id).exec();
+    const user = await User.findById(identifier).exec();
     if (!user) {
       ctx.status = 404;
       return;
@@ -63,13 +64,13 @@ TODO : 추후에 soft delete 처리
 // };
 
 /* 사용자 정보 수정 (특정 정보 변경)
-PATCH /api/posts/:id
- { name, password, email } 
+PATCH /api/posts/:identifier
+ { identifier,name, password, email } 
 */
 export const update = async (ctx) => {
-  const { id } = ctx.params;
+  const { identifier } = ctx.params;
   try {
-    const user = await User.findByIdAndUpdate(id, ctx.request.body, {
+    const user = await User.findByIdAndUpdate(identifier, ctx.request.body, {
       new: true,
     }).exec();
     if (!user) {
