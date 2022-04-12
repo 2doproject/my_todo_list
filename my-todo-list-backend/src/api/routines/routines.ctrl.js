@@ -54,14 +54,14 @@ export const remove = async (ctx) => {
   const { id } = ctx.params;
   try {
     await Routine.findByIdAndRemove(id).exec();
-    ctx.satatu = 204;
+    ctx.status = 204;
   } catch (e) {
     ctx.throw(500, e);
   }
 };
 
 /* 루틴 정보 수정 (특정 정보 변경)
-PATCH /api/posts/:id
+PATCH /api/routines/:id
  {  isDone, todo, type } 
 */
 export const update = async (ctx) => {
@@ -70,6 +70,7 @@ export const update = async (ctx) => {
     const routine = await Routine.findByIdAndUpdate(id, ctx.request.body, {
       new: true,
     }).exec();
+    console.log('routine', routine);
     if (!routine) {
       ctx.status = 404;
       return;

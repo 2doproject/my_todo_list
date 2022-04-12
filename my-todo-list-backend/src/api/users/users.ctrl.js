@@ -36,9 +36,9 @@ export const list = async (ctx) => {
 GET /api/users/:id
 */
 export const read = async (ctx) => {
-  const { identifier } = ctx.params;
+  const { id } = ctx.params;
   try {
-    const user = await User.findById(identifier).exec();
+    const user = await User.findById(id).exec();
     if (!user) {
       ctx.status = 404;
       return;
@@ -57,20 +57,20 @@ TODO : 추후에 soft delete 처리
 //   const { id } = ctx.params;
 //   try {
 //     await User.findByIdAndRemove(id).exec();
-//     ctx.satatu = 204;
+//     ctx.status = 204;
 //   } catch (e) {
 //     ctx.throw(500, e);
 //   }
 // };
 
 /* 사용자 정보 수정 (특정 정보 변경)
-PATCH /api/posts/:identifier
+PATCH /api/users/:id
  { identifier,name, password, email } 
 */
 export const update = async (ctx) => {
-  const { identifier } = ctx.params;
+  const { id } = ctx.params;
   try {
-    const user = await User.findByIdAndUpdate(identifier, ctx.request.body, {
+    const user = await User.findByIdAndUpdate(id, ctx.request.body, {
       new: true,
     }).exec();
     if (!user) {
