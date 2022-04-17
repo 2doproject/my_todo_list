@@ -1,10 +1,13 @@
+import User from '../../models/user';
+
 /* 사용자 생성
 POST /api/users
 { name, password, email }
 */
 export const write = async (ctx) => {
-  const { name, password, email } = ctx.request.body;
+  const { identifier, name, password, email } = ctx.request.body;
   const user = new User({
+    identifier,
     name,
     password,
     email,
@@ -54,15 +57,15 @@ TODO : 추후에 soft delete 처리
 //   const { id } = ctx.params;
 //   try {
 //     await User.findByIdAndRemove(id).exec();
-//     ctx.satatu = 204;
+//     ctx.status = 204;
 //   } catch (e) {
 //     ctx.throw(500, e);
 //   }
 // };
 
 /* 사용자 정보 수정 (특정 정보 변경)
-PATCH /api/posts/:id
- { name, password, email } 
+PATCH /api/users/:id
+ { identifier,name, password, email } 
 */
 export const update = async (ctx) => {
   const { id } = ctx.params;

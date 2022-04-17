@@ -1,10 +1,11 @@
+import Routine from '../../models/routine';
 /* 루틴 생성
 POST /api/routines
 { isDone, todo, type }
 */
 export const write = async (ctx) => {
   const { isDone, todo, type } = ctx.request.body;
-  const routine = new routine({
+  const routine = new Routine({
     isDone,
     todo,
     type,
@@ -22,7 +23,7 @@ GET /api/routines
 */
 export const list = async (ctx) => {
   try {
-    const routines = await routine.find().exec();
+    const routines = await Routine.find().exec();
     ctx.body = routines;
   } catch (e) {
     ctx.throw(500, e);
@@ -35,7 +36,7 @@ GET /api/routines/:id
 export const read = async (ctx) => {
   const { id } = ctx.params;
   try {
-    const routine = await routine.findById(id).exec();
+    const routine = await Routine.findById(id).exec();
     if (!routine) {
       ctx.status = 404;
       return;
@@ -52,25 +53,24 @@ DELETE /api/routines/:id
 export const remove = async (ctx) => {
   const { id } = ctx.params;
   try {
-    await routine.findByIdAndRemove(id).exec();
-    ctx.satatu = 204;
+    await Routine.findByIdAndRemove(id).exec();
+    ctx.status = 204;
   } catch (e) {
     ctx.throw(500, e);
   }
 };
 
 /* 루틴 정보 수정 (특정 정보 변경)
-PATCH /api/posts/:id
+PATCH /api/routines/:id
  {  isDone, todo, type } 
 */
 export const update = async (ctx) => {
   const { id } = ctx.params;
   try {
-    const routine = await routine
-      .findByIdAndUpdate(id, ctx.request.body, {
-        new: true,
-      })
-      .exec();
+    const routine = await Routine.findByIdAndUpdate(id, ctx.request.body, {
+      new: true,
+    }).exec();
+    console.log('routine', routine);
     if (!routine) {
       ctx.status = 404;
       return;
