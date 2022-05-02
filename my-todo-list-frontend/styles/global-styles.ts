@@ -61,6 +61,19 @@ const globalStyles = createGlobalStyle`
     border-collapse: collapse;
     border-spacing: 0;
   }
+
+  /* 화면상에서는 보이지 않지만, 검색 엔진에서는 이 클래스명이 적용된 텍스트를 그대로 읽어온다. 그래서 웹접근성을 높일 수 있게 된다. */
+  .visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
 `;
 
 export default globalStyles;

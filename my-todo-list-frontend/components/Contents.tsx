@@ -5,16 +5,18 @@ interface Props {
   background?: string;
 }
 
-const Contents = styled.section<Props>`
+const StyledContents = styled.section<Props>`
   background: ${({ background }) => background};
+  height: 100vh;
+  border-top: 1px solid #E0E2E7;;
 `;
 
-const ContentsWrapper = (): JSX.Element => {
+const Contents = (props: Props): JSX.Element => {
   return (
-    <Contents>
+    <StyledContents>
       <h1>메인 컨텐츠</h1>
-    </Contents>
+    </StyledContents>
   )
 }
 
-export default ContentsWrapper;
+export default Contents;

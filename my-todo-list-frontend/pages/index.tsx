@@ -1,14 +1,18 @@
 import type { NextPage } from 'next';
-import HeaderWrapper from '../components/Header';
-import NavWrapper from '../components/Nav';
-import ContentsWrapper from '../components/Contents';
+import Header from '../components/Header';
+import Contents from '../components/Contents';
+import Button from '../components/Button';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 const Home: NextPage = () => {
   return (
     <div className="layout">
-      <HeaderWrapper />
-      <NavWrapper />
-      <ContentsWrapper />
+      <Header />
+      <Contents />
+      <Button>
+        <FontAwesomeIcon icon={faPlus} size={'lg'} />
+      </Button>
     </div>
   );
 };
