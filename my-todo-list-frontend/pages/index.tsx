@@ -1,13 +1,20 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import type { NextPage } from 'next';
+import Header from '../components/Header';
+import Contents from '../components/Contents';
+import Button from '../components/Button';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 const Home: NextPage = () => {
   return (
-    <div className={styles.container}>
+    <div className="layout">
+      <Header />
+      <Contents />
+      <Button>
+        <FontAwesomeIcon icon={faPlus} size={'lg'} />
+      </Button>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
