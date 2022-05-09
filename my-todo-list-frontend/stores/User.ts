@@ -1,11 +1,10 @@
+import axios from 'axios';
 import { User } from '../interface/user';
 import RootStore from './RootStore';
 
-export default class UserStore extends RootStore<User> {
-  modelName: string;
-  static getList: any;
-  constructor() {
-    super();
-    this.modelName = 'users';
-  }
+export default class UserStore {
+  static getList = async (): Promise<void> => {
+    const result = await axios.get('/api/users');
+    return result.data;
+  };
 }
