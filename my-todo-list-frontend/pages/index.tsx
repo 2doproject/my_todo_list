@@ -13,7 +13,8 @@ const Home: NextPage = () => {
       <Contents />
       <Button
         onClick={(): void => {
-          UserStore.getList();
+          const result = UserStore.getList();
+          console.log('result', result);
         }}
       >
         <FontAwesomeIcon icon={faPlus} size={'lg'} />

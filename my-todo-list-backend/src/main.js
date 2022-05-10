@@ -8,12 +8,6 @@ import api from './api';
 
 const { PORT, MONGO_URI } = process.env;
 
-// CORS 옵션
-const corsOptions = {
-  origin: process.env.CLIENT_HOST || 3000,
-  credentials: true,
-};
-
 const dbConnect = async () => {
   try {
     await mongoose.connect(MONGO_URI);
@@ -33,7 +27,7 @@ const router = new Router();
 router.use('/api', api.routes()); // 라우트 적용
 
 app.proxy = true; // true 일때 proxy 헤더들을 신뢰함
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(bodyParser());
 
 app.use(router.routes()).use(router.allowedMethods());
