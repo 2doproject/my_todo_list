@@ -1,11 +1,18 @@
 require('dotenv').config();
 import Koa from 'koa';
+import cors from '@koa/cors';
 import Router from 'koa-router';
 import bodyParser from 'koa-bodyparser';
 import mongoose from 'mongoose';
 import api from './api';
 
 const { PORT, MONGO_URI } = process.env;
+
+// CORS 옵션
+const corsOptions = {
+  origin: process.env.CLIENT_HOST || 3000,
+  credentials: true,
+};
 
 const dbConnect = async () => {
   try {
@@ -25,6 +32,8 @@ const router = new Router();
 // 라우터 설정
 router.use('/api', api.routes()); // 라우트 적용
 
+app.proxy = true; // true 일때 proxy 헤더들을 신뢰함
+app.use(cors(corsOptions));
 app.use(bodyParser());
 
 app.use(router.routes()).use(router.allowedMethods());
