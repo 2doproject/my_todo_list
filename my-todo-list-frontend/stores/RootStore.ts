@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+/* TODO: 공통함수로 만들기 */
 export default class RootStore<T> {
   modelName!: string;
 
@@ -17,10 +18,7 @@ export default class RootStore<T> {
 
   //조회
   getList = async (param?: T): Promise<T> => {
-    const result = await axios.get(
-      `localhost:4000/api/${this.modelName}`,
-      param,
-    );
+    const result = await axios.get(`/api/${this.modelName}`, param);
     return result.data;
   };
 
