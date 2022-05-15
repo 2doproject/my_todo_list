@@ -6,6 +6,7 @@ interface Props {
   className?: string;
   width?: number | string;
   height?: number | string;
+  onClick?: () => void
 }
 
 const StyledButton = styled.button<Props>`
@@ -14,14 +15,17 @@ const StyledButton = styled.button<Props>`
   border-radius: 50%;
   background: #EE7057;
   border: none;
+  position: fixed;
+  right: 50px;
+  bottom: 50px;
 
   svg {
     color: #fff;
   }
 `;
 
-const Button = ({ children }: Props): JSX.Element => (
-  <StyledButton>{children}</StyledButton>
+const Button = ({ children, onClick }: Props): JSX.Element => (
+  <StyledButton onClick={onClick}>{children}</StyledButton>
 );
 
 export default Button;
