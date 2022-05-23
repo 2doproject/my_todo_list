@@ -6,14 +6,14 @@ interface Props {
   className?: string;
   width?: number | string;
   height?: number | string;
-  onClick?: () => void
+  onClick?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const StyledButton = styled.button<Props>`
   width: ${({ width }) => width || '50px'};
   height: ${({ height }) => height || '50px'};
   border-radius: 50%;
-  background: #EE7057;
+  background: #ee7057;
   border: none;
   position: fixed;
   right: 50px;
