@@ -13,7 +13,7 @@ export default class RoutineStore {
     param: unknown,
   ): Promise<Routine> => {
     axios.defaults.baseURL = 'http://localhost:4000';
-    const result = await axios.patch(`//api/routines/${id}`, param);
+    const result = await axios.patch(`/api/routines/${id}`, param);
     return result.data;
   };
 
@@ -29,7 +29,7 @@ export default class RoutineStore {
   };
 
   static delete = async (id: number): Promise<Routine> => {
-    const result = await axios.delete(`//api/routines/${id}`);
+    const result = await axios.delete(`/api/routines/${id}`);
     return result.data;
   };
 }
