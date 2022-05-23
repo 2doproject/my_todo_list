@@ -1,14 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import {
-  TableContainer,
-  Table,
-  TableHead,
-  TableBody,
-  TableCell,
-  TableRow,
-  Paper
-} from '@mui/material';
+import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
+import RoutineStore from '../stores/Routine';
+import { Routine } from '../interface/routine';
 
 interface Props {
   background?: string;
@@ -23,40 +17,43 @@ const StyledContents = styled.section<Props>`
 `;
 
 const Contents = (): JSX.Element => {
-  const createData = (id: number, todo: string, isDone: boolean) => {
-    return { id, todo, isDone };
+  const [routines, setRoutines] = useState<Routine[]>([]);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  // @TODO:
+  const getData = async (): Promise<void> => {
+    try {
+      const result = await RoutineStore.getList();
+
+      console.log('result', result);
+
+      setRoutines([result]);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const rows = [
-    createData(1, '침대 나가면 이불 정리', true),
-    createData(2, '유산균 챙겨 먹기', true),
-    createData(3, '자기개발', false),
-    createData(4, '운동하기', false),
-    createData(5, '스트레칭하기', false),
+  const columns: GridColDef[] = [
+    { field: '_id', headerName: 'ID', hide: true },
+    { field: 'todo', headerName: 'todo', minWidth: 150 },
+    { field: 'isDone', headerName: 'isDone', minWidth: 150 },
   ];
 
   return (
     <StyledContents>
-      <TableContainer>
-        <Table sx={{ width: '70vw', height: '100%', margin: '50px auto' }}>
-          <TableHead>
-            <TableRow>
-              <TableCell align="left">TODO</TableCell>
-              <TableCell align="left">isDone</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => {
-              return (
-                <TableRow key={row.id}>
-                  <TableCell align="left">{row.todo}</TableCell>
-                  <TableCell align="left">{row.isDone ? '✅' : ''}</TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <div style={{ height: 400, width: 400 }}>
+        <DataGrid
+          getRowId={(row) => row._id}
+          rows={routines}
+          columns={columns}
+          pageSize={5}
+          rowsPerPageOptions={[5]}
+          hideFooter
+        />
+      </div>
     </StyledContents>
   );
 };

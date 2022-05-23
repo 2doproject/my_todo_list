@@ -16,6 +16,7 @@
     "@fortawesome/react-fontawesome": "^0.1.18",
     "@mui/lab": "^5.0.0-alpha.75",
     "@mui/material": "^5.5.0",
+    "@mui/x-data-grid": "^5.11.1",
     "@types/styled-components": "^5.1.25",
     "axios": "^0.26.0",
     "eslint-config-airbnb": "^19.0.4",

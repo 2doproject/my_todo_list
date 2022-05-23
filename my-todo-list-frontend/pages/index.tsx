@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 import Dialogs from '../components/Dialog';
-import UserStore from '../stores/User';
 
 const StyledLayout = styled.div`
   overflow-x: hidden;
@@ -24,8 +23,6 @@ const Home: NextPage = () => {
         <Button
           onClick={(): void => {
             setOpenDialog(true);
-            const result = UserStore.getList();
-            console.log('result', result);
           }}
         >
           <FontAwesomeIcon icon={faPlus} size={'lg'} />
