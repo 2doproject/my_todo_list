@@ -13,7 +13,7 @@ export default class UserStore {
     param: unknown,
   ): Promise<User> => {
     axios.defaults.baseURL = 'http://localhost:4000';
-    const result = await axios.patch(`//api/users/${id}`, param);
+    const result = await axios.patch(`/api/users/${id}`, param);
     return result.data;
   };
 
@@ -29,7 +29,7 @@ export default class UserStore {
   };
 
   static delete = async (id: number): Promise<User> => {
-    const result = await axios.delete(`//api/users/${id}`);
+    const result = await axios.delete(`/api/users/${id}`);
     return result.data;
   };
 }
