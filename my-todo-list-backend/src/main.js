@@ -1,5 +1,6 @@
 require('dotenv').config();
 import Koa from 'koa';
+import cors from '@koa/cors';
 import Router from 'koa-router';
 import bodyParser from 'koa-bodyparser';
 import mongoose from 'mongoose';
@@ -25,6 +26,8 @@ const router = new Router();
 // 라우터 설정
 router.use('/api', api.routes()); // 라우트 적용
 
+app.proxy = true; // true 일때 proxy 헤더들을 신뢰함
+app.use(cors());
 app.use(bodyParser());
 
 app.use(router.routes()).use(router.allowedMethods());
