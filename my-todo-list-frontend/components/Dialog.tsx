@@ -1,14 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions
+} from '@mui/material';
+import RoutineStore from '../stores/Routine';
 import Input from './Input';
-import { Dialog, DialogTitle, DialogContent } from '@mui/material';
+import CustomButton from './Button';
 
 interface Props {
   open: boolean;
   setClose: (value: boolean) => void;
 }
 
-const Dialogs = (props: Props): JSX.Element => {
-  const { open, setClose } = props;
+const Dialogs = ({ open, setClose }: Props): JSX.Element => {
+  const [todo, setTodo] = useState<string>('');
+  const [type, setType] = useState<string>('');
+
+  const handleClick = async (): Promise<any> => {
+    console.log(!todo);
+    try {
+      if (!todo) {
+        alert('루틴을 입력해 주세요.');
+      } else {
+        const result = await RoutineStore.create({
+          todo: todo,
+          type: type,
+          isDone: false,
+        });
+
+        setClose(false);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <Dialog
@@ -19,8 +46,26 @@ const Dialogs = (props: Props): JSX.Element => {
     >
       <DialogTitle>루틴 추가하기</DialogTitle>
       <DialogContent>
-        <Input />
+        <Input
+          label="Todo"
+          value={todo}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
+            setTodo(event.target.value);
+          }}
+        />
+        <Input
+          label="Type"
+          value={type}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
+            setType(event.target.value);
+          }}
+        />
       </DialogContent>
+      <DialogActions
+        sx={{ '&.MuiDialogActions-root': { padding: '0px 24px 16px' } }}
+      >
+        <CustomButton onClick={handleClick}>추가</CustomButton>
+      </DialogActions>
     </Dialog>
   );
 };

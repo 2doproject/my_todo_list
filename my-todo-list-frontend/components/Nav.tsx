@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import MenuIcon from '@mui/icons-material/Menu';
 
 interface Props {
   className?: string;
@@ -40,10 +39,11 @@ const StyledNav = styled.nav<Props>`
       max-width: 360px;
       max-height: 100%;
       min-height: 100%;
-      padding: 30px 20px;
+      padding: 30px 0px;
 
       .nav-item {
         text-align: left;
+        width: 100%;
       }
     }
   }
@@ -54,7 +54,7 @@ const Nav = ({ className }: Props): JSX.Element => (
     <h2 className="visually-hidden">메뉴</h2>
     <input type="checkbox" name="" id="toggle" />
     <label htmlFor="toggle">
-      <FontAwesomeIcon icon={faBars} size={'lg'} />
+      <MenuIcon />
     </label>
     <div className="menu">
       <ul className="menu-list">

@@ -1,31 +1,26 @@
 import React from 'react';
-import styled from 'styled-components';
+import { styled, Button } from '@mui/material';
 
 interface Props {
   children?: React.ReactNode;
-  className?: string;
-  width?: number | string;
-  height?: number | string;
   onClick?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-const StyledButton = styled.button<Props>`
-  width: ${({ width }) => width || '50px'};
-  height: ${({ height }) => height || '50px'};
-  border-radius: 50%;
-  background: #ee7057;
-  border: none;
-  position: fixed;
-  right: 50px;
-  bottom: 50px;
+const StyledButton = styled(Button)({
+  color: '#EE7057',
+  border: '1px solid #EE7057',
+  '&:hover': {
+    border: '1px solid #EE7057',
+    backgroundColor: '#fdf0ee',
+  },
+});
 
-  svg {
-    color: #fff;
-  }
-`;
+const CustomButton = ({ children, onClick }: Props): JSX.Element => {
+  return (
+    <StyledButton variant="outlined" size="large" onClick={onClick}>
+      {children}
+    </StyledButton>
+  );
+};
 
-const Button = ({ children, onClick }: Props): JSX.Element => (
-  <StyledButton onClick={onClick}>{children}</StyledButton>
-);
-
-export default Button;
+export default CustomButton;
