@@ -11,26 +11,25 @@ import CustomButton from './Button';
 
 interface Props {
   open: boolean;
-  setClose: (value: boolean) => void;
+  setCloseDialog: (value: boolean) => void;
 }
 
-const Dialogs = ({ open, setClose }: Props): JSX.Element => {
+const Dialogs = ({ open, setCloseDialog }: Props): JSX.Element => {
   const [todo, setTodo] = useState<string>('');
   const [type, setType] = useState<string>('');
 
   const handleClick = async (): Promise<any> => {
-    console.log(!todo);
     try {
       if (!todo) {
         alert('루틴을 입력해 주세요.');
       } else {
-        const result = await RoutineStore.create({
+        await RoutineStore.create({
           todo: todo,
           type: type,
           isDone: false,
         });
 
-        setClose(false);
+        setCloseDialog(false);
       }
     } catch (error) {
       console.error(error);
@@ -40,7 +39,7 @@ const Dialogs = ({ open, setClose }: Props): JSX.Element => {
   return (
     <Dialog
       open={open}
-      onClose={(): void => setClose(false)}
+      onClose={(): void => setCloseDialog(false)}
       sx={{ '& .MuiDialog-paper': { width: '80%', maxHeight: 435 } }}
       maxWidth="xs"
     >

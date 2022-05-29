@@ -27,7 +27,7 @@ const Home: NextPage = () => {
       {openDialog && (
         <Dialogs
           open={true}
-          setClose={(value: boolean): void => {
+          setCloseDialog={(value: boolean): void => {
             setOpenDialog(value);
           }}
         />
