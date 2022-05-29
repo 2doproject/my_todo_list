@@ -1,25 +1,38 @@
+import React, { useState } from 'react';
 import type { NextPage } from 'next';
 import Header from '../components/Header';
 import Contents from '../components/Contents';
-import Button from '../components/Button';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import UserStore from '../stores/User';
+import PlusButton from '../components/PlusButton';
+import styled from 'styled-components';
+import Dialogs from '../components/Dialog';
+
+const StyledLayout = styled.div`
+  overflow-x: hidden;
+`;
 
 const Home: NextPage = () => {
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
+
   return (
-    <div className="layout">
-      <Header />
-      <Contents />
-      <Button
-        onClick={(): void => {
-          const result = UserStore.getList();
-          console.log('result', result);
-        }}
-      >
-        <FontAwesomeIcon icon={faPlus} size={'lg'} />
-      </Button>
-    </div>
+    <>
+      <StyledLayout>
+        <Header />
+        <Contents />
+        <PlusButton
+          onClick={(): void => {
+            setOpenDialog(true);
+          }}
+        />
+      </StyledLayout>
+      {openDialog && (
+        <Dialogs
+          open={true}
+          setCloseDialog={(value: boolean): void => {
+            setOpenDialog(value);
+          }}
+        />
+      )}
+    </>
   );
 };
 
