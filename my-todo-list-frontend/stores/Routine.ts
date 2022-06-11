@@ -23,7 +23,7 @@ export default class RoutineStore {
     return result.data;
   };
 
-  static getId = async (id: number): Promise<Routine> => {
+  static getId = async (id: number | string): Promise<Routine> => {
     const result = await axios.get(`/api/routines/${id}`);
     return result.data;
   };

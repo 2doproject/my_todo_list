@@ -1,9 +1,12 @@
 import React from 'react';
 import { styled, Button } from '@mui/material';
 
+type SIZE = 'small' | 'medium' | 'large'
+
 interface Props {
   children?: React.ReactNode;
   onClick?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
+  size?: SIZE
 }
 
 const StyledButton = styled(Button)({
@@ -15,9 +18,10 @@ const StyledButton = styled(Button)({
   },
 });
 
-const CustomButton = ({ children, onClick }: Props): JSX.Element => {
+
+const CustomButton = ({ children, onClick, size = 'large' }: Props): JSX.Element => {
   return (
-    <StyledButton variant="outlined" size="large" onClick={onClick}>
+    <StyledButton variant="outlined" size={size} onClick={onClick}>
       {children}
     </StyledButton>
   );
