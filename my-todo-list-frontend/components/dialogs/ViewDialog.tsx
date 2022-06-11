@@ -4,6 +4,7 @@ import RoutineStore from '../../stores/Routine';
 import Dialog from '../Dialog';
 import Input from '../Input';
 import CustomButton from '../Button';
+import Checkbox from '../Checkbox';
 import UpdateDialog from './UpdateDialog';
 
 interface Props {
@@ -20,8 +21,9 @@ const ViewDialog = ({
   setCloseDialog,
   setDoneCallback,
 }: Props): JSX.Element => {
-  const [todo, setTodo] = useState<string>('');
-  const [type, setType] = useState<string>('');
+  const [todo, setTodo] = useState<string | undefined>('');
+  const [type, setType] = useState<string | undefined>('');
+  const [isDone, setIsDone] = useState<boolean | undefined>(false);
   const [openUpdateDialog, setOpenUpdateDialog] = useState<boolean>(false);
 
   useEffect(() => {
@@ -32,8 +34,9 @@ const ViewDialog = ({
     try {
       const result = await RoutineStore.getId(routineId);
 
-      setTodo(result.todo || '');
-      setType(result.type || '');
+      setTodo(result.todo);
+      setType(result.type);
+      setIsDone(result.isDone);
     } catch (error) {
       console.error(error);
     }
@@ -52,6 +55,7 @@ const ViewDialog = ({
         <DialogContent>
           <Input label="Todo" value={todo} readonly={true} />
           <Input label="Type" value={type} readonly={true} />
+          <Checkbox label="IsDone" checked={isDone} disabled />
         </DialogContent>
         <DialogActions
           sx={{ '&.MuiDialogActions-root': { padding: '0px 24px 16px' } }}

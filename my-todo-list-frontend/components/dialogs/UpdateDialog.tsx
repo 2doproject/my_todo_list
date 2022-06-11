@@ -4,12 +4,13 @@ import Dialog from '../Dialog';
 import RoutineStore from '../../stores/Routine';
 import Input from '../Input';
 import CustomButton from '../Button';
+import Checkbox from '../Checkbox';
 
 interface Props {
   routineId: string;
   open: boolean;
   setCloseDialog: (value: boolean) => void;
-  setDoneCallback: () => void
+  setDoneCallback: () => void;
 }
 
 /** 루틴 수정 다이얼로그 */
@@ -17,10 +18,11 @@ const UpdateDialog = ({
   routineId,
   open,
   setCloseDialog,
-  setDoneCallback
+  setDoneCallback,
 }: Props): JSX.Element => {
-  const [todo, setTodo] = useState<string>('');
-  const [type, setType] = useState<string>('');
+  const [todo, setTodo] = useState<string | undefined>('');
+  const [type, setType] = useState<string | undefined>('');
+  const [isDone, setIsDone] = useState<boolean | undefined>(false);
 
   useEffect(() => {
     getRoutineById();
@@ -30,8 +32,9 @@ const UpdateDialog = ({
     try {
       const result = await RoutineStore.getId(routineId);
 
-      setTodo(result.todo || '');
-      setType(result.type || '');
+      setTodo(result.todo);
+      setType(result.type);
+      setIsDone(result.isDone);
     } catch (error) {
       console.error(error);
     }
@@ -45,7 +48,7 @@ const UpdateDialog = ({
         await RoutineStore.update(routineId, {
           ...(todo && { todo: todo }),
           ...(type && { type: type }),
-          isDone: false,
+          isDone: isDone
         });
 
         setCloseDialog(false);
@@ -72,6 +75,12 @@ const UpdateDialog = ({
           value={type}
           onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
             setType(event.target.value);
+          }}
+        />
+        <Checkbox
+          checked={isDone}
+          onChange={(): void => {
+            setIsDone(prev => !prev);
           }}
         />
       </DialogContent>
