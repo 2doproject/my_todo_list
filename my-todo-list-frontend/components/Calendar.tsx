@@ -2,19 +2,23 @@ import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DatePicker from '@mui/lab/DatePicker';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 
-const Calendar = (): JSX.Element => {
-  const [value, setValue] = useState<Date | null>(null);
+interface Props {
+  handleChange: (newValue: any) => void;
+  value?: Date;
+}
 
+const Calendar = (props: Props): JSX.Element => {
+  const { handleChange, value } = props;
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <DatePicker
-        label="Basic example"
+      <DesktopDatePicker
+        label="날짜 선택"
+        inputFormat="yyyy/MM/dd"
+        mask="____/__/__"
         value={value}
-        onChange={(newValue) => {
-          setValue(newValue);
-        }}
+        onChange={handleChange}
         renderInput={(params) => <TextField {...params} />}
       />
     </LocalizationProvider>
