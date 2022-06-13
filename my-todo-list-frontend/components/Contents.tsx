@@ -5,7 +5,7 @@ import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import RoutineStore from '../stores/Routine';
 import { Routine } from '../interface/routine';
-import Calendar from './Calendar';
+import CustomPicker from './CustomPicker';
 
 const StyledContents = styledComponents.section<{ background?: string }>`
   background: ${({ background }) => background};
@@ -99,7 +99,7 @@ const Contents = (): JSX.Element => {
 
   return (
     <StyledContents>
-      <Calendar
+      <CustomPicker
         handleChange={(value) => {
           setDate(value);
         }}
