@@ -109,7 +109,6 @@ const Contents = ({ dataLoading }: Props): JSX.Element => {
       headerAlign: 'center',
       align: 'center',
       width: Number(`${matches ? 70 : 100}`),
-      editable: true,
       disableColumnMenu: true,
       sortable: false,
       hideSortIcons: true,
