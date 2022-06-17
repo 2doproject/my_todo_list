@@ -5,6 +5,7 @@ POST /api/routines
 */
 export const write = async (ctx) => {
   const { isDone, todo, type, targetDate } = ctx.request.body;
+
   const routine = new Routine({
     isDone,
     todo,
@@ -26,6 +27,27 @@ export const list = async (ctx) => {
   try {
     const routines = await Routine.find().exec();
     ctx.body = routines;
+  } catch (e) {
+    ctx.throw(500, e);
+  }
+};
+
+/* 루틴 목록 검색
+GET /api/routines/search
+*/
+export const search = async (ctx) => {
+  const { isDone, todo, type, startDate, endDate } = ctx.request.query;
+  console.log(' new Date(startDate)', new Date(startDate));
+  try {
+    const routines = await Routine.find({
+      isDone: isDone,
+      todo: todo,
+      type: type,
+      startDate: { $gte: new Date(startDate) },
+      endDate: { $lte: endDate },
+    }).exec();
+    ctx.body = routines;
+    console.log('routines', routines);
   } catch (e) {
     ctx.throw(500, e);
   }
