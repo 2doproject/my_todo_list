@@ -4,8 +4,8 @@ import { styled } from '@mui/material';
 import {
   DataGrid,
   GridColDef,
-  GridRowsProp,
   GridRenderCellParams,
+  GridRowsProp,
 } from '@mui/x-data-grid';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import RoutineStore from '../stores/Routine';
@@ -13,6 +13,7 @@ import { Routine } from '../interface/routine';
 import { Box, Link } from '@mui/material';
 import Button from './Button';
 import ViewDialog from './dialogs/ViewDialog';
+import CustomPicker from './CustomPicker';
 
 const StyledContents = styledComponents.section<{ background?: string }>`
   background: ${({ background }) => background};
@@ -49,6 +50,7 @@ interface Props {
 const Contents = ({ dataLoading }: Props): JSX.Element => {
   const [routines, setRoutines] = useState<Routine[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [date, setDate] = useState(new Date());
   const [routineId, setRoutineId] = useState<string>('');
 
   const [openViewDialog, setOpenViewDialog] = useState<boolean>(false);
@@ -122,6 +124,7 @@ const Contents = ({ dataLoading }: Props): JSX.Element => {
   const getRoutines = async (): Promise<void> => {
     try {
       setLoading(true);
+      // TODO : 캘린더에 설정한 날짜 기준으로 데이터 불러오기
       const result = (await RoutineStore.getList()) as Routine[];
 
       setRoutines(result);
@@ -134,6 +137,12 @@ const Contents = ({ dataLoading }: Props): JSX.Element => {
   return (
     <>
       <StyledContents>
+        <CustomPicker
+          handleChange={(value) => {
+            setDate(value);
+          }}
+          value={date}
+        />
         <StyledWrapper>
           <StyledDataGrid
             getRowId={(row) => row._id}
