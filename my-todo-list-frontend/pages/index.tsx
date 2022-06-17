@@ -4,7 +4,7 @@ import Header from '../components/Header';
 import Contents from '../components/Contents';
 import PlusButton from '../components/PlusButton';
 import styled from 'styled-components';
-import Dialogs from '../components/Dialog';
+import CreateDialog from '../components/dialogs/CreateDialog';
 
 const StyledLayout = styled.div`
   overflow-x: hidden;
@@ -12,12 +12,13 @@ const StyledLayout = styled.div`
 
 const Home: NextPage = () => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
+  const [dataLoading, setDataLoading] = useState<boolean>(false);
 
   return (
     <>
       <StyledLayout>
         <Header />
-        <Contents />
+        <Contents dataLoading={dataLoading} />
         <PlusButton
           onClick={(): void => {
             setOpenDialog(true);
@@ -25,10 +26,13 @@ const Home: NextPage = () => {
         />
       </StyledLayout>
       {openDialog && (
-        <Dialogs
+        <CreateDialog
           open={true}
           setCloseDialog={(value: boolean): void => {
             setOpenDialog(value);
+          }}
+          setDoneCallback={(): void => {
+            setDataLoading(true)
           }}
         />
       )}
