@@ -14,10 +14,12 @@ const RoutineSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  targetDate: {
-    $gte: Date,
-    $lte: Date,
-  },
+  targetDate: [
+    {
+      start: Date,
+      end: Date,
+    },
+  ],
 });
 
 const Routine = mongoose.model('Routine', RoutineSchema);

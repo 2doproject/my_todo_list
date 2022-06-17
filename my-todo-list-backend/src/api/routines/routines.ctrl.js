@@ -4,11 +4,12 @@ POST /api/routines
 { isDone, todo, type }
 */
 export const write = async (ctx) => {
-  const { isDone, todo, type } = ctx.request.body;
+  const { isDone, todo, type, targetDate } = ctx.request.body;
   const routine = new Routine({
     isDone,
     todo,
     type,
+    targetDate,
   });
   try {
     await routine.save();
@@ -70,7 +71,6 @@ export const update = async (ctx) => {
     const routine = await Routine.findByIdAndUpdate(id, ctx.request.body, {
       new: true,
     }).exec();
-    console.log('routine', routine);
     if (!routine) {
       ctx.status = 404;
       return;
