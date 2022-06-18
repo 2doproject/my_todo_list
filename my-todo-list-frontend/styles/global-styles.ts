@@ -74,6 +74,11 @@ const globalStyles = createGlobalStyle`
     white-space: nowrap !important;
     border: 0 !important;
   }
+
+  /* DateRange 컴포넌트 가운데 정렬 */
+  .rdrCalendarWrapper.rdrDateRangeWrapper {
+    margin: 10px auto auto;
+  }
 `;
 
 export default globalStyles;

@@ -14,6 +14,7 @@ import { Box, Link } from '@mui/material';
 import Button from './Button';
 import ViewDialog from './dialogs/ViewDialog';
 import CustomPicker from './CustomPicker';
+import CustomDateRange from './CustomDateRange';
 
 const StyledContents = styledComponents.section<{ background?: string }>`
   background: ${({ background }) => background};
@@ -137,12 +138,13 @@ const Contents = ({ dataLoading }: Props): JSX.Element => {
   return (
     <>
       <StyledContents>
-        <CustomPicker
+        <CustomDateRange />
+        {/* <CustomPicker
           handleChange={(value) => {
             setDate(value);
           }}
           value={date}
-        />
+        /> */}
         <StyledWrapper>
           <StyledDataGrid
             getRowId={(row) => row._id}
