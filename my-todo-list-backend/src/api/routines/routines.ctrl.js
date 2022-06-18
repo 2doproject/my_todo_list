@@ -37,17 +37,31 @@ GET /api/routines/search
 */
 export const search = async (ctx) => {
   const { isDone, todo, type, startDate, endDate } = ctx.request.query;
-  console.log(' new Date(startDate)', new Date(startDate));
+  const filterQuery = {};
+
+  if (isDone !== undefined) {
+    filterQuery.isDone = isDone;
+  }
+
+  if (todo !== undefined) {
+    filterQuery.todo = todo;
+  }
+
+  if (type !== undefined) {
+    filterQuery.type = type;
+  }
+
+  if (startDate !== undefined) {
+    filterQuery.startDate = { $gte: new Date(startDate) };
+  }
+
+  if (endDate !== undefined) {
+    filterQuery.endDate = { $lte: new Date(endDate) };
+  }
+
   try {
-    const routines = await Routine.find({
-      isDone: isDone,
-      todo: todo,
-      type: type,
-      startDate: { $gte: new Date(startDate) },
-      endDate: { $lte: endDate },
-    }).exec();
+    const routines = await Routine.find(filterQuery).exec();
     ctx.body = routines;
-    console.log('routines', routines);
   } catch (e) {
     ctx.throw(500, e);
   }
