@@ -150,7 +150,7 @@ const Contents = ({ dataLoading }: Props): JSX.Element => {
             getRowId={(row) => row._id}
             rows={routines as GridRowsProp}
             columns={columns}
-            pageSize={5}
+            pageSize={20}
             rowsPerPageOptions={[5]}
             autoHeight
             loading={loading}
