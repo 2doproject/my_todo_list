@@ -57,6 +57,7 @@ const CreateDialog = ({ open, setCloseDialog, setDoneCallback }: Props): JSX.Ele
       <DialogActions
         sx={{ '&.MuiDialogActions-root': { padding: '0px 24px 16px' } }}
       >
+        <CustomButton variant='text' onClick={(): void => setCloseDialog(false)}>취소</CustomButton>
         <CustomButton onClick={doSubmit}>추가</CustomButton>
       </DialogActions>
     </Dialog>

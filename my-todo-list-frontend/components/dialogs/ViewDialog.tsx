@@ -60,6 +60,7 @@ const ViewDialog = ({
         <DialogActions
           sx={{ '&.MuiDialogActions-root': { padding: '0px 24px 16px' } }}
         >
+        <CustomButton variant='text' onClick={(): void => setCloseDialog(false)}>취소</CustomButton>
           <CustomButton
             onClick={(): void => {
               setOpenUpdateDialog(true);

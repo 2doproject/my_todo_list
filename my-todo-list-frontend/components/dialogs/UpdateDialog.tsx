@@ -87,7 +87,8 @@ const UpdateDialog = ({
       <DialogActions
         sx={{ '&.MuiDialogActions-root': { padding: '0px 24px 16px' } }}
       >
-        <CustomButton onClick={doSubmit}>수정</CustomButton>
+        <CustomButton variant='text' onClick={(): void => setCloseDialog(false)}>취소</CustomButton>
+        <CustomButton onClick={doSubmit}>저장</CustomButton>
       </DialogActions>
     </Dialog>
   );
