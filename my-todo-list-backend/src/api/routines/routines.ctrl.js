@@ -4,11 +4,13 @@ POST /api/routines
 { isDone, todo, type }
 */
 export const write = async (ctx) => {
-  const { isDone, todo, type } = ctx.request.body;
+  const { isDone, todo, type, targetDate } = ctx.request.body;
+
   const routine = new Routine({
     isDone,
     todo,
     type,
+    targetDate,
   });
   try {
     await routine.save();
@@ -24,6 +26,41 @@ GET /api/routines
 export const list = async (ctx) => {
   try {
     const routines = await Routine.find().exec();
+    ctx.body = routines;
+  } catch (e) {
+    ctx.throw(500, e);
+  }
+};
+
+/* 루틴 목록 검색
+GET /api/routines/search
+*/
+export const search = async (ctx) => {
+  const { isDone, todo, type, startDate, endDate } = ctx.request.query;
+  const filterQuery = {};
+
+  if (isDone !== undefined) {
+    filterQuery.isDone = isDone;
+  }
+
+  if (todo !== undefined) {
+    filterQuery.todo = todo;
+  }
+
+  if (type !== undefined) {
+    filterQuery.type = type;
+  }
+
+  if (startDate !== undefined) {
+    filterQuery.startDate = { $gte: new Date(startDate) };
+  }
+
+  if (endDate !== undefined) {
+    filterQuery.endDate = { $lte: new Date(endDate) };
+  }
+
+  try {
+    const routines = await Routine.find(filterQuery).exec();
     ctx.body = routines;
   } catch (e) {
     ctx.throw(500, e);
@@ -70,7 +107,6 @@ export const update = async (ctx) => {
     const routine = await Routine.findByIdAndUpdate(id, ctx.request.body, {
       new: true,
     }).exec();
-    console.log('routine', routine);
     if (!routine) {
       ctx.status = 404;
       return;

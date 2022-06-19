@@ -23,6 +23,18 @@ export default class RoutineStore {
     return result.data;
   };
 
+  static searchList = async (params?: {
+    todo?: string;
+    type?: string;
+    startDate?: Date | string;
+    endDate?: Date | string;
+    isDone?: boolean;
+  }): Promise<Routine> => {
+    axios.defaults.baseURL = 'http://localhost:4000';
+    const result = await axios.get(`/api/routines/search`, { params });
+    return result.data;
+  };
+
   static getId = async (id: number | string): Promise<Routine> => {
     const result = await axios.get(`/api/routines/${id}`);
     return result.data;
