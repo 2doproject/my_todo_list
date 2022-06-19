@@ -125,7 +125,6 @@ const Contents = ({ dataLoading }: Props): JSX.Element => {
   const getRoutines = async (): Promise<void> => {
     try {
       setLoading(true);
-      // TODO : 캘린더에 설정한 날짜 기준으로 데이터 불러오기
       const result = (await RoutineStore.getList()) as Routine[];
 
       setRoutines(result);
@@ -134,6 +133,25 @@ const Contents = ({ dataLoading }: Props): JSX.Element => {
       console.error(error);
     }
   };
+  // API 호출 예시
+  //const getFilterData = async (): Promise<void> => {
+  //   try {
+  //     setLoading(true);
+  //     // TODO : 캘린더에 설정한 날짜 기준으로 데이터 불러오기
+  //     const result = (await RoutineStore.searchList({
+  //       isDone: false,
+  //       startDate: '2022-06-17T00:00:00.000+00:00',
+  //       endDate: '2022-06-17T00:00:00.000+00:00',
+  //       todo: '234',
+  //       type: '444',
+  //     })) as Routine[];
+
+  //     setRoutines(result);
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   return (
     <>
