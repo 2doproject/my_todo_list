@@ -10,10 +10,10 @@ import {
 import useMediaQuery from '@mui/material/useMediaQuery';
 import RoutineStore from '../stores/Routine';
 import { Routine } from '../interface/routine';
-import { Box } from '@mui/material';
+import { Box, Link } from '@mui/material';
 import Button from './Button';
 import ViewDialog from './dialogs/ViewDialog';
-import { startOfWeek } from 'date-fns';
+import CustomPicker from './CustomPicker';
 import CustomDateRange from './CustomDateRange';
 
 const StyledContents = styledComponents.section<{ background?: string }>`
@@ -51,8 +51,7 @@ interface Props {
 const Contents = ({ dataLoading }: Props): JSX.Element => {
   const [routines, setRoutines] = useState<Routine[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [ranges, setRanges] = useState([]);
-
+  const [date, setDate] = useState(new Date());
   const [routineId, setRoutineId] = useState<string>('');
 
   const [openViewDialog, setOpenViewDialog] = useState<boolean>(false);
@@ -134,33 +133,30 @@ const Contents = ({ dataLoading }: Props): JSX.Element => {
       console.error(error);
     }
   };
-
   // API 호출 예시
-  const getFilterData = async (): Promise<void> => {
-    try {
-      setLoading(true);
-      const result = (await RoutineStore.searchList({
-        isDone: false,
-        startDate: '2022-06-17T00:00:00.000+00:00',
-        endDate: '2022-06-17T00:00:00.000+00:00',
-        todo: '234',
-        type: '444',
-      })) as Routine[];
+  //const getFilterData = async (): Promise<void> => {
+  //   try {
+  //     setLoading(true);
+  //     // TODO : 캘린더에 설정한 날짜 기준으로 데이터 불러오기
+  //     const result = (await RoutineStore.searchList({
+  //       isDone: false,
+  //       startDate: '2022-06-17T00:00:00.000+00:00',
+  //       endDate: '2022-06-17T00:00:00.000+00:00',
+  //       todo: '234',
+  //       type: '444',
+  //     })) as Routine[];
 
-      setRoutines(result);
-      setLoading(false);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  const onChangeDate = (date: any): void => {
-    console.log('date', date);
-    // setRanges([date.selection]);
-  };
+  //     setRoutines(result);
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
   return (
     <>
       <StyledContents>
-        <CustomDateRange handleChange={onChangeDate} ranges={ranges} />
+        <CustomDateRange />
         {/* <CustomPicker
           handleChange={(value) => {
             setDate(value);
