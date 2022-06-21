@@ -32,8 +32,8 @@ const CreateDialog = ({
           todo: todo,
           type: type,
           isDone: false,
-          startDate: formatISO(new Date(startDate)),
-          endDate: formatISO(new Date(endDate)),
+          ...(startDate && { startDate: formatISO(new Date(startDate)) }),
+          ...(endDate && { endDate: formatISO(new Date(endDate)) }),
         });
 
         setCloseDialog(false);
@@ -64,16 +64,16 @@ const CreateDialog = ({
         />
         <Box sx={{ display: 'flex' }}>
           <Input
-            label='StartDate'
-            placeholder='2022/06/22'
+            label="StartDate"
+            placeholder="2022/06/22"
             value={startDate}
             onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
               setStartDate(event.target.value);
             }}
           />
           <Input
-            label='EndDate'
-            placeholder='2022/06/22'
+            label="EndDate"
+            placeholder="2022/06/22"
             value={endDate}
             onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
               setEndDate(event.target.value);
