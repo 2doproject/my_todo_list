@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styledComponents from 'styled-components';
 import { styled } from '@mui/material';
 import {
@@ -13,7 +13,7 @@ import { Routine } from '../interface/routine';
 import { Box } from '@mui/material';
 import Button from './Button';
 import ViewDialog from './dialogs/ViewDialog';
-import { startOfWeek } from 'date-fns';
+import { format, startOfWeek } from 'date-fns';
 import CustomDateRange from './CustomDateRange';
 
 const StyledContents = styledComponents.section<{ background?: string }>`
@@ -51,7 +51,13 @@ interface Props {
 const Contents = ({ dataLoading }: Props): JSX.Element => {
   const [routines, setRoutines] = useState<Routine[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [ranges, setRanges] = useState([]);
+  const [ranges, setRanges] = useState([
+    {
+      key: 'selection',
+      startDate: new Date(),
+      endDate: startOfWeek(new Date()),
+    },
+  ]);
 
   const [routineId, setRoutineId] = useState<string>('');
 
@@ -123,6 +129,11 @@ const Contents = ({ dataLoading }: Props): JSX.Element => {
     getRoutines();
   }, [dataLoading]);
 
+  useEffect(() => {
+    console.log('ranges', ranges);
+    getFilterData();
+  }, [ranges]);
+
   const getRoutines = async (): Promise<void> => {
     try {
       setLoading(true);
@@ -134,17 +145,17 @@ const Contents = ({ dataLoading }: Props): JSX.Element => {
       console.error(error);
     }
   };
-
-  // API 호출 예시
+  // 캘린더에서 선택한 날짜만 보여주기
   const getFilterData = async (): Promise<void> => {
     try {
       setLoading(true);
+      console.log('ranges[0].startDate', ranges[0].startDate);
       const result = (await RoutineStore.searchList({
-        isDone: false,
-        startDate: '2022-06-17T00:00:00.000+00:00',
-        endDate: '2022-06-17T00:00:00.000+00:00',
-        todo: '234',
-        type: '444',
+        startDate: format(ranges[0].startDate, 'yyyy-MM-DD'),
+        endDate: format(ranges[0].endDate, 'yyyy-MM-DD'),
+        // isDone: false,
+        // todo: '234',
+        // type: '444',
       })) as Routine[];
 
       setRoutines(result);
@@ -153,10 +164,14 @@ const Contents = ({ dataLoading }: Props): JSX.Element => {
       console.error(error);
     }
   };
-  const onChangeDate = (date: any): void => {
-    console.log('date', date);
-    // setRanges([date.selection]);
+
+  const onChangeDate = (
+    ranges: Array<{ key: string; startDate: Date; endDate: Date }>,
+  ) => {
+    console.log('ranges2', ranges);
+    setRanges(ranges);
   };
+
   return (
     <>
       <StyledContents>
