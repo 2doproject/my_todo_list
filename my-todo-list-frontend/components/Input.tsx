@@ -8,6 +8,7 @@ interface Props {
   value?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   readonly?: boolean;
+  placeholder?: string
 }
 
 const StyledTextField = styled(TextField)({
@@ -24,7 +25,7 @@ const StyledTextField = styled(TextField)({
   },
 });
 
-const Input = ({ label, value, onChange, readonly = false }: Props): JSX.Element => {
+const Input = ({ label, value, onChange, readonly = false, placeholder }: Props): JSX.Element => {
   return (
     <FormControl fullWidth variant="standard" margin="dense">
       <StyledTextField
@@ -35,6 +36,7 @@ const Input = ({ label, value, onChange, readonly = false }: Props): JSX.Element
         InputProps={{
           readOnly: readonly,
         }}
+        placeholder={placeholder}
       />
     </FormControl>
   );

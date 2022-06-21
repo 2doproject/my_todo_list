@@ -5,6 +5,8 @@ export interface Routine {
   type?: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  startDate?: any;
+  endDate?: any;
   targetDate?: {
     $gte?: Date;
     $lte?: Date;

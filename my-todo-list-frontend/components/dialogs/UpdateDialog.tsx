@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { DialogTitle, DialogContent, DialogActions, Box } from '@mui/material';
+import { format, formatISO } from 'date-fns';
 import Dialog from '../Dialog';
 import RoutineStore from '../../stores/Routine';
 import Input from '../Input';
@@ -22,6 +23,8 @@ const UpdateDialog = ({
 }: Props): JSX.Element => {
   const [todo, setTodo] = useState<string | undefined>('');
   const [type, setType] = useState<string | undefined>('');
+  const [startDate, setStartDate] = useState<string>('');
+  const [endDate, setEndDate] = useState<string>('');
   const [isDone, setIsDone] = useState<boolean | undefined>(false);
 
   useEffect(() => {
@@ -35,6 +38,8 @@ const UpdateDialog = ({
       setTodo(result.todo);
       setType(result.type);
       setIsDone(result.isDone);
+      setStartDate(format(new Date(result.startDate), 'yyyy/MM/dd'));
+      setEndDate(format(new Date(result.endDate), 'yyyy/MM/dd'));
     } catch (error) {
       console.error(error);
     }
@@ -48,7 +53,9 @@ const UpdateDialog = ({
         await RoutineStore.update(routineId, {
           ...(todo && { todo: todo }),
           ...(type && { type: type }),
-          isDone: isDone
+          isDone: isDone,
+          startDate: formatISO(new Date(startDate)),
+          endDate: formatISO(new Date(endDate))
         });
 
         setCloseDialog(false);
@@ -77,17 +84,40 @@ const UpdateDialog = ({
             setType(event.target.value);
           }}
         />
+        <Box sx={{ display: 'flex' }}>
+          <Input
+            label='StartDate'
+            placeholder='2022/06/22'
+            value={startDate}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
+              setStartDate(event.target.value);
+            }}
+          />
+          <Input
+            label='EndDate'
+            placeholder='2022/06/22'
+            value={endDate}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
+              setEndDate(event.target.value);
+            }}
+          />
+        </Box>
         <Checkbox
           checked={isDone}
           onChange={(): void => {
-            setIsDone(prev => !prev);
+            setIsDone((prev) => !prev);
           }}
         />
       </DialogContent>
       <DialogActions
         sx={{ '&.MuiDialogActions-root': { padding: '0px 24px 16px' } }}
       >
-        <CustomButton variant='text' onClick={(): void => setCloseDialog(false)}>취소</CustomButton>
+        <CustomButton
+          variant="text"
+          onClick={(): void => setCloseDialog(false)}
+        >
+          취소
+        </CustomButton>
         <CustomButton onClick={doSubmit}>저장</CustomButton>
       </DialogActions>
     </Dialog>
