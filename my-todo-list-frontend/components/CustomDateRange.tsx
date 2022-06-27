@@ -1,30 +1,20 @@
-import React, { useState } from 'react';
-import { DateRange } from 'react-date-range';
-import { Box } from '@mui/material';
-import ko from 'date-fns/locale/ko';
-import { startOfWeek } from 'date-fns';
+import React from 'react';
+import DateRangePicker from 'rsuite/DateRangePicker';
 
 interface Props {
-  handleChange?: (newValue?: any) => void;
-  ranges?: Array<{ key: string; startDate: Date; endDate: Date }>;
+  handleChange: (newValue: [Date, Date]) => void;
+  value: [Date, Date];
+  placeholder?: string;
 }
 
 const CustomDateRange = (props: Props): JSX.Element => {
-  const { handleChange, ranges } = props;
-
+  const { handleChange, value, placeholder } = props;
   return (
-    <Box sx={{ display: 'flex' }}>
-      <DateRange
-        locale={ko}
-        months={1}
-        date={new Date()}
-        ranges={ranges}
-        onChange={handleChange}
-        editableDateInputs={true}
-        rangeColors={['#EE7057']}
-        dateDisplayFormat="yyyy/MM/dd"
-      />
-    </Box>
+    <DateRangePicker
+      placeholder={placeholder}
+      value={value}
+      onChange={handleChange}
+    />
   );
 };
 

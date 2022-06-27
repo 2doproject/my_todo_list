@@ -13,8 +13,8 @@ import { Routine } from '../interface/routine';
 import { Box } from '@mui/material';
 import Button from './Button';
 import ViewDialog from './dialogs/ViewDialog';
-import { format, startOfWeek } from 'date-fns';
 import CustomDateRange from './CustomDateRange';
+import { startOfDay, endOfDay, subDays, format } from 'date-fns';
 
 const StyledContents = styledComponents.section<{ background?: string }>`
   background: ${({ background }) => background};
@@ -51,12 +51,9 @@ interface Props {
 const Contents = ({ dataLoading }: Props): JSX.Element => {
   const [routines, setRoutines] = useState<Routine[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [ranges, setRanges] = useState([
-    {
-      key: 'selection',
-      startDate: new Date(),
-      endDate: startOfWeek(new Date()),
-    },
+  const [value, setValue] = useState([
+    startOfDay(subDays(new Date(), 6)),
+    endOfDay(new Date()),
   ]);
 
   const [routineId, setRoutineId] = useState<string>('');
@@ -130,9 +127,8 @@ const Contents = ({ dataLoading }: Props): JSX.Element => {
   }, [dataLoading]);
 
   useEffect(() => {
-    console.log('ranges', ranges);
     getFilterData();
-  }, [ranges]);
+  }, [dataLoading, value]);
 
   const getRoutines = async (): Promise<void> => {
     try {
@@ -149,13 +145,10 @@ const Contents = ({ dataLoading }: Props): JSX.Element => {
   const getFilterData = async (): Promise<void> => {
     try {
       setLoading(true);
-      console.log('ranges[0].startDate', ranges[0].startDate);
+      const [startDate, endDate] = value;
       const result = (await RoutineStore.searchList({
-        startDate: format(ranges[0].startDate, 'yyyy-MM-DD'),
-        endDate: format(ranges[0].endDate, 'yyyy-MM-DD'),
-        // isDone: false,
-        // todo: '234',
-        // type: '444',
+        startDate: format(startDate, 'yyyy-MM-dd'),
+        endDate: format(endDate, 'yyyy-MM-dd'),
       })) as Routine[];
 
       setRoutines(result);
@@ -165,17 +158,14 @@ const Contents = ({ dataLoading }: Props): JSX.Element => {
     }
   };
 
-  const onChangeDate = (
-    ranges: Array<{ key: string; startDate: Date; endDate: Date }>,
-  ) => {
-    console.log('ranges2', ranges);
-    setRanges(ranges);
+  const onChangeDate = (value: any) => {
+    setValue(value);
   };
 
   return (
     <>
       <StyledContents>
-        <CustomDateRange handleChange={onChangeDate} ranges={ranges} />
+        <CustomDateRange handleChange={onChangeDate} value={value} />
         {/* <CustomPicker
           handleChange={(value) => {
             setDate(value);
