@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { DialogTitle, DialogContent, DialogActions, Box } from '@mui/material';
-import { format, formatISO } from 'date-fns';
+import {
+  startOfDay,
+  endOfDay,
+  subDays,
+  format,
+  addDays,
+  formatISO,
+} from 'date-fns';
 import Dialog from '../Dialog';
 import RoutineStore from '../../stores/Routine';
 import Input from '../Input';
 import CustomButton from '../Button';
 import Checkbox from '../Checkbox';
+import CustomDateRange from '../CustomDateRange';
+import DateRangePicker from 'rsuite/DateRangePicker';
 
 interface Props {
   routineId: string;
@@ -23,9 +32,11 @@ const UpdateDialog = ({
 }: Props): JSX.Element => {
   const [todo, setTodo] = useState<string | undefined>('');
   const [type, setType] = useState<string | undefined>('');
-  const [startDate, setStartDate] = useState<string>('');
-  const [endDate, setEndDate] = useState<string>('');
   const [isDone, setIsDone] = useState<boolean | undefined>(false);
+  const [value, setValue] = useState<[Date, Date] | null>([
+    startOfDay(subDays(new Date(), 6)),
+    endOfDay(new Date()),
+  ]);
 
   useEffect(() => {
     getRoutineById();
@@ -35,11 +46,15 @@ const UpdateDialog = ({
     try {
       const result = await RoutineStore.getId(routineId);
 
-      setTodo(result.todo);
-      setType(result.type);
-      setIsDone(result.isDone);
-      setStartDate(format(new Date(result.startDate), 'yyyy/MM/dd'));
-      setEndDate(format(new Date(result.endDate), 'yyyy/MM/dd'));
+      const { todo, type, isDone, startDate, endDate } = result || {};
+
+      setTodo(todo);
+      setType(type);
+      setIsDone(isDone);
+
+      if (startDate && endDate) {
+        setValue([new Date(startDate), new Date(endDate)]);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -50,12 +65,14 @@ const UpdateDialog = ({
       if (!todo) {
         alert('루틴을 입력해 주세요.');
       } else {
+        const [startDate, endDate] = value || [];
+
         await RoutineStore.update(routineId, {
           ...(todo && { todo: todo }),
           ...(type && { type: type }),
           isDone: isDone,
-          startDate: formatISO(new Date(startDate)),
-          endDate: formatISO(new Date(endDate))
+          ...(startDate && { startDate: format(startDate, 'yyyy-MM-dd') }),
+          ...(endDate && { endDate: format(endDate, 'yyyy-MM-dd') }),
         });
 
         setCloseDialog(false);
@@ -64,6 +81,10 @@ const UpdateDialog = ({
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const onChangeDate = (value: [Date, Date] | null) => {
+    setValue(value);
   };
 
   return (
@@ -84,22 +105,13 @@ const UpdateDialog = ({
             setType(event.target.value);
           }}
         />
-        <Box sx={{ display: 'flex' }}>
-          <Input
-            label='StartDate'
-            placeholder='2022/06/22'
-            value={startDate}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
-              setStartDate(event.target.value);
-            }}
-          />
-          <Input
-            label='EndDate'
-            placeholder='2022/06/22'
-            value={endDate}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
-              setEndDate(event.target.value);
-            }}
+        {/* @TODO: 다이얼로그 내에 daterange-panel이 표시되도록 수정 필요! */}
+        <Box sx={{ marginTop: '8px' }}>
+          <CustomDateRange
+            size="lg"
+            width="100%"
+            value={value}
+            handleChange={onChangeDate}
           />
         </Box>
         <Checkbox

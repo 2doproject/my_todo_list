@@ -7,6 +7,7 @@ import Input from '../Input';
 import CustomButton from '../Button';
 import Checkbox from '../Checkbox';
 import UpdateDialog from './UpdateDialog';
+import CustomDateRange from '../CustomDateRange';
 
 interface Props {
   routineId: string;
@@ -25,8 +26,7 @@ const ViewDialog = ({
   const [todo, setTodo] = useState<string | undefined>('');
   const [type, setType] = useState<string | undefined>('');
   const [isDone, setIsDone] = useState<boolean | undefined>(false);
-  const [startDate, setStartDate] = useState<string>('');
-  const [endDate, setEndDate] = useState<string>('');
+  const [value, setValue] = useState<[Date, Date] | null>(null);
   const [openUpdateDialog, setOpenUpdateDialog] = useState<boolean>(false);
 
   useEffect(() => {
@@ -37,11 +37,15 @@ const ViewDialog = ({
     try {
       const result = await RoutineStore.getId(routineId);
 
-      setTodo(result.todo);
-      setType(result.type);
-      setIsDone(result.isDone);
-      setStartDate(format(new Date(result.startDate), 'yyyy/MM/dd'));
-      setEndDate(format(new Date(result.endDate), 'yyyy/MM/dd'));
+      const { todo, type, isDone, startDate, endDate } = result || {};
+
+      setTodo(todo);
+      setType(type);
+      setIsDone(isDone);
+
+      if (startDate && endDate) {
+        setValue([new Date(startDate), new Date(endDate)]);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -60,9 +64,13 @@ const ViewDialog = ({
         <DialogContent>
           <Input label="Todo" value={todo} readonly={true} />
           <Input label="Type" value={type} readonly={true} />
-          <Box sx={{ display: 'flex' }}>
-            <Input label="StartDate" value={startDate} readonly={true} />
-            <Input label="EndDate" value={endDate} readonly={true} />
+          <Box sx={{ marginTop: '8px' }}>
+            <CustomDateRange
+              readonly={true}
+              size="lg"
+              width="100%"
+              value={value}
+            />
           </Box>
           <Checkbox label="IsDone" checked={isDone} disabled />
         </DialogContent>

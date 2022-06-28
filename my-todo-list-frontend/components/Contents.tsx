@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import styledComponents from 'styled-components';
 import { styled } from '@mui/material';
 import {
@@ -25,7 +25,7 @@ const StyledContents = styledComponents.section<{ background?: string }>`
 const StyledWrapper = styledComponents.div`
   width: 800px;
   min-width: 800px;
-  height: 500px;
+  height: 800px;
   margin: 0 auto;
 
   @media screen and (max-width: 600px) {
@@ -36,10 +36,10 @@ const StyledWrapper = styledComponents.div`
 
 const StyledDataGrid = styled(DataGrid)({
   '&.MuiDataGrid-root': {
-    margin: '48px 24px',
+    margin: '24px 24px',
 
     '@media screen and (max-width: 600px)': {
-      margin: '48px 0px',
+      margin: '24px 0px',
     },
   },
 });
@@ -51,15 +51,12 @@ interface Props {
 const Contents = ({ dataLoading }: Props): JSX.Element => {
   const [routines, setRoutines] = useState<Routine[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [value, setValue] = useState([
+  const [value, setValue] = useState<[Date, Date] | null>([
     startOfDay(subDays(new Date(), 6)),
     endOfDay(new Date()),
   ]);
-
   const [routineId, setRoutineId] = useState<string>('');
-
   const [openViewDialog, setOpenViewDialog] = useState<boolean>(false);
-  const [openUpdateDialog, setOpenUpdateDialog] = useState<boolean>(false);
 
   const matches = useMediaQuery('(max-width:600px)', { noSsr: true });
 
@@ -145,10 +142,11 @@ const Contents = ({ dataLoading }: Props): JSX.Element => {
   const getFilterData = async (): Promise<void> => {
     try {
       setLoading(true);
-      const [startDate, endDate] = value;
+      const [startDate, endDate] = value || [];
+
       const result = (await RoutineStore.searchList({
-        startDate: format(startDate, 'yyyy-MM-dd'),
-        endDate: format(endDate, 'yyyy-MM-dd'),
+        ...(startDate && { startDate: format(startDate, 'yyyy-MM-dd') }),
+        ...(endDate && { endDate: format(endDate, 'yyyy-MM-dd') }),
       })) as Routine[];
 
       setRoutines(result);
@@ -158,20 +156,29 @@ const Contents = ({ dataLoading }: Props): JSX.Element => {
     }
   };
 
-  const onChangeDate = (value: any) => {
+  const onChangeDate = (value: [Date, Date] | null) => {
     setValue(value);
   };
 
   return (
     <>
       <StyledContents>
-        <CustomDateRange handleChange={onChangeDate} value={value} />
-        {/* <CustomPicker
-          handleChange={(value) => {
-            setDate(value);
+        <Box
+          sx={{
+            display: 'flex',
+            width: '20%',
+            margin: '24px auto auto',
+            justifyContent: 'center',
           }}
-          value={date}
-        /> */}
+        >
+          <CustomDateRange
+            handleChange={onChangeDate}
+            value={value}
+            handleClose={() => {
+              setLoading(false);
+            }}
+          />
+        </Box>
         <StyledWrapper>
           <StyledDataGrid
             getRowId={(row) => row._id}

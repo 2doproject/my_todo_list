@@ -26,8 +26,8 @@ export default class RoutineStore {
   static searchList = async (params?: {
     todo?: string;
     type?: string;
-    startDate?: Date | string;
-    endDate?: Date | string;
+    startDate?: Date | string | undefined;
+    endDate?: Date | string | undefined;
     isDone?: boolean;
   }): Promise<Routine> => {
     axios.defaults.baseURL = 'http://localhost:4000';
