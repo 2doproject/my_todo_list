@@ -1,27 +1,33 @@
 import React from 'react';
 import { styled, Button } from '@mui/material';
 
-type SIZE = 'small' | 'medium' | 'large'
+type SIZE = 'small' | 'medium' | 'large';
+type VARIANT = 'text' | 'contained' | 'outlined';
 
 interface Props {
   children?: React.ReactNode;
   onClick?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
-  size?: SIZE
+  size?: SIZE;
+  variant?: VARIANT;
 }
 
-const StyledButton = styled(Button)({
-  color: '#EE7057',
-  border: '1px solid #EE7057',
+const StyledButton = styled(Button)((props: Props) => ({
+  color: props.variant === 'outlined' ? '#EE7057' : '',
+  border: props.variant === 'outlined' ? '1px solid #EE7057' : '',
   '&:hover': {
-    border: '1px solid #EE7057',
-    backgroundColor: '#fdf0ee',
+    border: props.variant === 'outlined' ? '1px solid #EE7057' : '',
+    backgroundColor: props.variant === 'outlined' ? '#fdf0ee' : '',
   },
-});
+}));
 
-
-const CustomButton = ({ children, onClick, size = 'large' }: Props): JSX.Element => {
+const CustomButton = ({
+  children,
+  onClick,
+  size = 'large',
+  variant = 'outlined',
+}: Props): JSX.Element => {
   return (
-    <StyledButton variant="outlined" size={size} onClick={onClick}>
+    <StyledButton variant={variant} size={size} onClick={onClick}>
       {children}
     </StyledButton>
   );

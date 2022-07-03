@@ -4,13 +4,14 @@ POST /api/routines
 { isDone, todo, type }
 */
 export const write = async (ctx) => {
-  const { isDone, todo, type, targetDate } = ctx.request.body;
+  const { isDone, todo, type, startDate, endDate } = ctx.request.body;
 
   const routine = new Routine({
     isDone,
     todo,
     type,
-    targetDate,
+    startDate,
+    endDate,
   });
   try {
     await routine.save();

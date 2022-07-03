@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { DialogTitle, DialogContent, DialogActions, Box } from '@mui/material';
+import {
+  startOfDay,
+  endOfDay,
+  subDays,
+  format
+} from 'date-fns';
 import Dialog from '../Dialog';
 import RoutineStore from '../../stores/Routine';
 import Input from '../Input';
 import CustomButton from '../Button';
 import Checkbox from '../Checkbox';
+import CustomDateRange from '../CustomDateRange';
+import DateRangePicker from 'rsuite/DateRangePicker';
 
 interface Props {
   routineId: string;
@@ -23,6 +31,10 @@ const UpdateDialog = ({
   const [todo, setTodo] = useState<string | undefined>('');
   const [type, setType] = useState<string | undefined>('');
   const [isDone, setIsDone] = useState<boolean | undefined>(false);
+  const [value, setValue] = useState<[Date, Date] | null>([
+    startOfDay(subDays(new Date(), 6)),
+    endOfDay(new Date()),
+  ]);
 
   useEffect(() => {
     getRoutineById();
@@ -32,9 +44,15 @@ const UpdateDialog = ({
     try {
       const result = await RoutineStore.getId(routineId);
 
-      setTodo(result.todo);
-      setType(result.type);
-      setIsDone(result.isDone);
+      const { todo, type, isDone, startDate, endDate } = result || {};
+
+      setTodo(todo);
+      setType(type);
+      setIsDone(isDone);
+
+      if (startDate && endDate) {
+        setValue([new Date(startDate), new Date(endDate)]);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -45,10 +63,14 @@ const UpdateDialog = ({
       if (!todo) {
         alert('루틴을 입력해 주세요.');
       } else {
+        const [startDate, endDate] = value || [];
+
         await RoutineStore.update(routineId, {
           ...(todo && { todo: todo }),
           ...(type && { type: type }),
-          isDone: isDone
+          isDone: isDone,
+          ...(startDate && { startDate: format(startDate, 'yyyy-MM-dd') }),
+          ...(endDate && { endDate: format(endDate, 'yyyy-MM-dd') }),
         });
 
         setCloseDialog(false);
@@ -57,6 +79,10 @@ const UpdateDialog = ({
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const onChangeDate = (value: [Date, Date] | null) => {
+    setValue(value);
   };
 
   return (
@@ -77,17 +103,32 @@ const UpdateDialog = ({
             setType(event.target.value);
           }}
         />
+        {/* @TODO: 다이얼로그 내에 daterange-panel이 표시되도록 수정 필요! */}
+        <Box sx={{ marginTop: '8px' }}>
+          <CustomDateRange
+            size="lg"
+            width="100%"
+            value={value}
+            handleChange={onChangeDate}
+          />
+        </Box>
         <Checkbox
           checked={isDone}
           onChange={(): void => {
-            setIsDone(prev => !prev);
+            setIsDone((prev) => !prev);
           }}
         />
       </DialogContent>
       <DialogActions
         sx={{ '&.MuiDialogActions-root': { padding: '0px 24px 16px' } }}
       >
-        <CustomButton onClick={doSubmit}>수정</CustomButton>
+        <CustomButton
+          variant="text"
+          onClick={(): void => setCloseDialog(false)}
+        >
+          취소
+        </CustomButton>
+        <CustomButton onClick={doSubmit}>저장</CustomButton>
       </DialogActions>
     </Dialog>
   );
