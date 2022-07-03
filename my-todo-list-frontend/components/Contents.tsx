@@ -15,6 +15,7 @@ import Button from './Button';
 import ViewDialog from './dialogs/ViewDialog';
 import CustomDateRange from './CustomDateRange';
 import { startOfDay, endOfDay, subDays, format } from 'date-fns';
+import DateRangePicker from 'rsuite/DateRangePicker';
 
 const StyledContents = styledComponents.section<{ background?: string }>`
   background: ${({ background }) => background};
@@ -174,7 +175,7 @@ const Contents = ({ dataLoading }: Props): JSX.Element => {
           <CustomDateRange
             handleChange={onChangeDate}
             value={value}
-            handleClose={() => {
+            handleClose={(): void => {
               setLoading(false);
             }}
           />

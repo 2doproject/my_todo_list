@@ -9,7 +9,6 @@ interface Props {
   readonly?: boolean;
   width?: string;
   handleClose?: () => void;
-  handleOpen?: () => void;
 }
 
 const CustomDateRange = (props: Props): JSX.Element => {
@@ -21,7 +20,6 @@ const CustomDateRange = (props: Props): JSX.Element => {
     placeholder,
     handleChange,
     handleClose,
-    handleOpen,
   } = props;
 
   return (
@@ -37,7 +35,6 @@ const CustomDateRange = (props: Props): JSX.Element => {
       style={{ width: width || 240 }}
       onChange={handleChange}
       onClose={handleClose}
-      onOpen={handleOpen}
     />
   );
 };

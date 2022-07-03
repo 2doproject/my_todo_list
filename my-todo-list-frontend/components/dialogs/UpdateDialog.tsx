@@ -81,7 +81,7 @@ const UpdateDialog = ({
     }
   };
 
-  const onChangeDate = (value: [Date, Date] | null) => {
+  const onChangeDate = (value: [Date, Date] | null): void => {
     setValue(value);
   };
 
@@ -103,7 +103,6 @@ const UpdateDialog = ({
             setType(event.target.value);
           }}
         />
-        {/* @TODO: 다이얼로그 내에 daterange-panel이 표시되도록 수정 필요! */}
         <Box sx={{ marginTop: '8px' }}>
           <CustomDateRange
             size="lg"
