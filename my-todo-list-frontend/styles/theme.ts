@@ -1,6 +1,5 @@
 import { DefaultTheme } from 'styled-components';
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css'; // theme css file
+import 'rsuite/dist/rsuite.min.css'; // main style file
 
 const colors = {
   black: '#141529',

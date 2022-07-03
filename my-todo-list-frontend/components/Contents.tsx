@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styledComponents from 'styled-components';
 import { styled } from '@mui/material';
 import {
@@ -10,11 +10,11 @@ import {
 import useMediaQuery from '@mui/material/useMediaQuery';
 import RoutineStore from '../stores/Routine';
 import { Routine } from '../interface/routine';
-import { Box, Link } from '@mui/material';
+import { Box } from '@mui/material';
 import Button from './Button';
 import ViewDialog from './dialogs/ViewDialog';
-import CustomPicker from './CustomPicker';
 import CustomDateRange from './CustomDateRange';
+import { startOfDay, endOfDay, subDays, format } from 'date-fns';
 
 const StyledContents = styledComponents.section<{ background?: string }>`
   background: ${({ background }) => background};
@@ -51,7 +51,11 @@ interface Props {
 const Contents = ({ dataLoading }: Props): JSX.Element => {
   const [routines, setRoutines] = useState<Routine[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [date, setDate] = useState(new Date());
+  const [value, setValue] = useState([
+    startOfDay(subDays(new Date(), 6)),
+    endOfDay(new Date()),
+  ]);
+
   const [routineId, setRoutineId] = useState<string>('');
 
   const [openViewDialog, setOpenViewDialog] = useState<boolean>(false);
@@ -122,6 +126,10 @@ const Contents = ({ dataLoading }: Props): JSX.Element => {
     getRoutines();
   }, [dataLoading]);
 
+  useEffect(() => {
+    getFilterData();
+  }, [dataLoading, value]);
+
   const getRoutines = async (): Promise<void> => {
     try {
       setLoading(true);
@@ -133,30 +141,31 @@ const Contents = ({ dataLoading }: Props): JSX.Element => {
       console.error(error);
     }
   };
-  // API 호출 예시
-  //const getFilterData = async (): Promise<void> => {
-  //   try {
-  //     setLoading(true);
-  //     // TODO : 캘린더에 설정한 날짜 기준으로 데이터 불러오기
-  //     const result = (await RoutineStore.searchList({
-  //       isDone: false,
-  //       startDate: '2022-06-17T00:00:00.000+00:00',
-  //       endDate: '2022-06-17T00:00:00.000+00:00',
-  //       todo: '234',
-  //       type: '444',
-  //     })) as Routine[];
+  // 캘린더에서 선택한 날짜만 보여주기
+  const getFilterData = async (): Promise<void> => {
+    try {
+      setLoading(true);
+      const [startDate, endDate] = value;
+      const result = (await RoutineStore.searchList({
+        startDate: format(startDate, 'yyyy-MM-dd'),
+        endDate: format(endDate, 'yyyy-MM-dd'),
+      })) as Routine[];
 
-  //     setRoutines(result);
-  //     setLoading(false);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+      setRoutines(result);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const onChangeDate = (value: any) => {
+    setValue(value);
+  };
 
   return (
     <>
       <StyledContents>
-        <CustomDateRange />
+        <CustomDateRange handleChange={onChangeDate} value={value} />
         {/* <CustomPicker
           handleChange={(value) => {
             setDate(value);
