@@ -79,6 +79,10 @@ const globalStyles = createGlobalStyle`
   .rdrCalendarWrapper.rdrDateRangeWrapper {
     margin: 10px auto auto;
   }
+
+  .rs-picker-menu {
+    z-index: 1400;
+  }
 `;
 
 export default globalStyles;

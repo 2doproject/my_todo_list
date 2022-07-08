@@ -174,7 +174,7 @@ const Contents = ({ dataLoading }: Props): JSX.Element => {
           <CustomDateRange
             handleChange={onChangeDate}
             value={value}
-            handleClose={() => {
+            handleClose={(): void => {
               setLoading(false);
             }}
           />
