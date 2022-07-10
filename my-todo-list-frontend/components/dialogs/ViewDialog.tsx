@@ -53,6 +53,7 @@ const ViewDialog = ({
   return (
     <>
       <Dialog
+        className='view-dialog'
         open={open}
         setCloseDialog={(): void => {
           setCloseDialog(false);
@@ -61,11 +62,12 @@ const ViewDialog = ({
       >
         <DialogTitle>루틴 상세 보기</DialogTitle>
         <DialogContent>
-          <Input label="Todo" value={todo} readonly={true} />
-          <Input label="Type" value={type} readonly={true} />
+          <Input label="Todo" value={todo} readonly={true} disabled={true} />
+          <Input label="Type" value={type} readonly={true} disabled={true} />
           <Box sx={{ marginTop: '8px' }}>
             <CustomDateRange
               readonly={true}
+              disabled={true}
               size="lg"
               width="100%"
               value={value}

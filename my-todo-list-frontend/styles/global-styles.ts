@@ -83,6 +83,14 @@ const globalStyles = createGlobalStyle`
   .rs-picker-menu {
     z-index: 1400;
   }
+
+  .rs-picker-disabled {
+    opacity: initial;
+  }
+
+  .view-dialog .rs-picker-toggle .rs-picker-toggle-placeholder {
+    visibility: hidden;
+  }
 `;
 
 export default globalStyles;

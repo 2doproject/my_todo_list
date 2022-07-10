@@ -12,7 +12,6 @@ import Input from '../Input';
 import CustomButton from '../Button';
 import Checkbox from '../Checkbox';
 import CustomDateRange from '../CustomDateRange';
-import DateRangePicker from 'rsuite/DateRangePicker';
 
 interface Props {
   routineId: string;

@@ -7,6 +7,7 @@ interface Props {
   placeholder?: string;
   size?: 'lg' | 'md' | 'sm' | 'xs';
   readonly?: boolean;
+  disabled?: boolean;
   width?: string;
   handleClose?: () => void;
 }
@@ -16,6 +17,7 @@ const CustomDateRange = (props: Props): JSX.Element => {
     size,
     width,
     readonly = false,
+    disabled = false,
     value,
     placeholder,
     handleChange,
@@ -28,6 +30,7 @@ const CustomDateRange = (props: Props): JSX.Element => {
       placeholder={placeholder}
       isoWeek={true}
       readOnly={readonly}
+      disabled={disabled}
       size={size || 'md'}
       hoverRange="week"
       appearance="default"
