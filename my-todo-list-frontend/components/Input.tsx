@@ -8,7 +8,8 @@ interface Props {
   value?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   readonly?: boolean;
-  placeholder?: string
+  disabled?: boolean;
+  placeholder?: string;
 }
 
 const StyledTextField = styled(TextField)({
@@ -22,16 +23,23 @@ const StyledTextField = styled(TextField)({
     '&.Mui-focused fieldset': {
       borderColor: '#EE7057',
     },
+    '&.Mui-disabled': {
+      color: 'inherit',
+    },
+    '& .Mui-disabled': {
+      '-webkit-text-fill-color': 'inherit'
+    }
   },
 });
 
-const Input = ({ label, value, onChange, readonly = false, placeholder }: Props): JSX.Element => {
+const Input = ({ label, value, onChange, readonly = false, disabled = false, placeholder }: Props): JSX.Element => {
   return (
     <FormControl fullWidth variant="standard" margin="dense">
       <StyledTextField
         id="custom-css-outlined-input"
         label={label}
         value={value}
+        disabled={disabled}
         onChange={onChange}
         InputProps={{
           readOnly: readonly,
